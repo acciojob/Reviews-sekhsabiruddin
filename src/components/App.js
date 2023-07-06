@@ -1,23 +1,62 @@
 import React, { useState } from "react";
+import data from "./data";
 
 const App = () => {
-  const arr = ["Tab 1", "Tab 2", "Tab 3"];
-  const [click, setClick] = useState("");
+  let [index, setIndex] = useState(0);
 
-  const handleTabClick = (details) => {
-    setClick(details);
-  };
+  function handlePreviousClick() {
+    if (index == 0) {
+      setIndex(3);
+    } else {
+      setIndex(index - 1);
+    }
+  }
+
+  function hangleNextClick() {
+    if (index == 3) {
+      setIndex(0);
+    } else {
+      setIndex(index + 1);
+    }
+  }
+
+  function handleRandomClick() {
+    let randomIndex;
+
+    do {
+      randomIndex = Math.floor(Math.random() * 4); // Generate a random number between 0 and 3
+    } while (randomIndex === index); // Loop until the random index is different from the current value
+
+    setIndex(randomIndex);
+    console.log(randomIndex);
+  }
 
   return (
     <div>
-      <ul>
-        {arr.map((details, index) => (
-          <li key={index} onClick={() => handleTabClick(details)}>
-            {details}
-          </li>
-        ))}
-      </ul>
-      <p>This is the content for {click}</p>
+      <h1 id="review-heading">Our Reviews</h1>
+      <div className="review">
+        <div>
+          <img className="person-img" src={data[index].image}></img>
+        </div>
+        <div>
+          <span className="author" id={`author-${index + 1}`}>
+            Name: {data[index].name}
+          </span>
+          <p className="job">Job: {data[index].job}</p>
+          <p className="info">Text: {data[index].text}</p>
+        </div>
+        <div>
+          <button className="prev-btn" onClick={handlePreviousClick}>
+            Previous
+          </button>
+          <button className="next-btn" onClick={hangleNextClick}>
+            Next
+          </button>
+          <button className="random-btn" onClick={handleRandomClick}>
+            surprise me
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
